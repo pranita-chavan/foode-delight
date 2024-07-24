@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Restaurant } from '../../../models/restaurant';
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestaurantService } from '../../../services/restaurant.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-restaurant',
@@ -27,11 +28,11 @@ import { RestaurantService } from '../../../services/restaurant.service';
   templateUrl: './create-restaurant.component.html',
   styleUrl: './create-restaurant.component.scss'
 })
-export class CreateRestaurantComponent {
+export class CreateRestaurantComponent implements OnInit {
 
   isEditMode: boolean = false;
   restaurant: Restaurant = {
-    id: 0, // Generate or assign ID as needed
+    id: '', // Generate or assign ID as needed
     name: '',
     cuisineType: '',
     description: '',
@@ -42,10 +43,11 @@ export class CreateRestaurantComponent {
   };
   constructor(private readonly router: Router,
     private route: ActivatedRoute,
-    private readonly restaurentService: RestaurantService
+    private readonly restaurentService: RestaurantService,
+    private _snackBar: MatSnackBar
   ) { }
 
-  onInit() {
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditMode = true;
@@ -53,6 +55,7 @@ export class CreateRestaurantComponent {
       }
     });
   }
+
 
   getRestaurantById(id: number) {
     this.restaurentService.getRestaurentById(id).subscribe(res => {
@@ -63,31 +66,33 @@ export class CreateRestaurantComponent {
 
   onSubmit(form: NgForm): void {
     if (form.valid) {
-      const formData = form.value;
-      const restaurant: Restaurant = {
-        id: 0, // Generate or assign ID as needed
-        name: formData.name,
-        cuisineType: formData.cuisineType,
-        description: formData.description,
-        rating: formData.rating,
-        isOpen: formData.isOpen || false,
-        location: formData.location,
-        contactNumber: formData.contactNumber
-      };
-
-      // Handle saving or submitting restaurant data (e.g., send to backend)
-      console.log('Submitted Restaurant:', restaurant);
+      this.saveOrUpdateRestaurant();
     } else {
       // Form not valid, handle error or show validation messages
-      console.error('Form is invalid');
+      this._snackBar.open('Please  enter correct details', 'close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 
-  saveRestaurant() {
+  saveOrUpdateRestaurant() {
     if (this.isEditMode) {
-      // Update existing restaurant logic using this.restaurantId
+      this.restaurentService.updateRestaurent(this.restaurant).subscribe(res => {
+        this._snackBar.open('Restaurant updated succesfully!', 'close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        this.close();
+      });
     } else {
-      // Create new restaurant logic
+      this.restaurentService.addRestaurent(this.restaurant).subscribe(res => {
+        this._snackBar.open('Restaurant added succesfully!', 'close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        this.close();
+      });
     }
   }
 

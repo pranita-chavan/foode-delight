@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { RestaurantService } from '../../../services/restaurant.service';
 import { Restaurant } from '../../../models/restaurant';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-restaurants',
@@ -35,13 +36,18 @@ export class RestaurantsComponent implements OnInit{
   ];
 
   constructor(private readonly router: Router,
-    private readonly restaurentService: RestaurantService
+    private readonly restaurentService: RestaurantService,
+    private _snackBar: MatSnackBar
   ){}
 
   ngOnInit() {
+    this.getRestaurents();
+  }
+ 
+  getRestaurents() {
     this.restaurentService.getRestaurents().subscribe(res => {
       this.dataSource = res;
-    })
+    });
   }
 
   getDisplayedColumns() {
@@ -52,11 +58,17 @@ export class RestaurantsComponent implements OnInit{
     this.router.navigate(['/create-restaurant']);
   }
 
-  edit() {
-    this.router.navigate(['/create-restaurant']);
+  edit(id: number) {
+    this.router.navigate(['/edit-restaurant', id]);
   }
 
-  delete() {
-    
+  delete(id: number) {
+    this.restaurentService.deleteRestaurent(id).subscribe(res => {
+      this._snackBar.open('Restaurant deleted succesfully!', 'close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      this.getRestaurents();
+    })
   }
 }

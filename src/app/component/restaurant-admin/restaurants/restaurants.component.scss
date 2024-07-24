@@ -1,8 +1,12 @@
 .createRestaurant{
     margin-bottom: 15px;
     float: right;
+    display: flex;
+    position: relative;
 }
 
 .textWrapNone{
     text-wrap: nowrap;
 }
+
+  
