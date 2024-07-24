@@ -1,0 +1,52 @@
+.sidenav-container {
+    height: 100vh;
+
+    .sidenav {
+        width: 250px;
+        background-color: #1976d2; // Background color of the sidenav
+        color: white;
+        border-color: white;
+        border-top-right-radius: unset;
+        border-bottom-right-radius: unset;
+
+        mat-list-item {
+            padding-left: 10px;
+
+            mat-icon {
+                margin-right: 10px;
+                color: white !important;
+            }
+
+            h4 {
+                color: white !important;
+            }
+        }
+    }
+
+    .header-toolbar {
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        background-color: #1976d2; // Toolbar color
+        color: #fff !important; // Text color in the toolbar
+
+        span{
+            color: white;
+        }
+
+        mat-icon {
+            color: white;
+        }
+
+        .spacer {
+            flex: 1 1 auto;
+        }
+
+    }
+
+
+    .content {
+        padding: 16px;
+        background-color: #fff; // Background color of the content area
+    }
+}

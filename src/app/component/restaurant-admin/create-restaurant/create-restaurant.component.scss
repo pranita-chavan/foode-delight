@@ -1,0 +1,44 @@
+.restaurant-form {
+    margin: auto;
+    padding: 20px;
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .half-width {
+        width: calc(50% - 10px);
+        margin-right: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .half-width {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+
+    mat-card {
+        box-shadow: none;
+    }
+
+    mat-card-actions {
+        justify-content: end;
+    }
+}
+
+
+
+.alignRight {
+    float: right;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}

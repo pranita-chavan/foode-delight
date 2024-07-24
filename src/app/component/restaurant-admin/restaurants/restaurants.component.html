@@ -1,0 +1,28 @@
+<div class="createRestaurant">
+    <button mat-flat-button color="primary" (click)="createNewRestaurant()">Create Restaurant</button>
+</div>
+<div class="restaurantList">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column.field">
+            <th mat-header-cell *matHeaderCellDef> {{ column.headerName }} </th>
+            <td class="textWrapNone" mat-cell *matCellDef="let element">
+                <!-- Use *ngIf to conditionally render based on column.field -->
+                <ng-container *ngIf="column.field !== 'actions'; else actionsCell">
+                    {{ element[column.field] }}
+                </ng-container>
+                <ng-template #actionsCell>
+                    <button mat-icon-button color="primary" (click)="edit()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="delete()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+    </table>
+</div>

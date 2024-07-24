@@ -1,0 +1,72 @@
+<div>
+    <button class="alignRight" mat-icon-button color="primary" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div>
+    <form #restaurantForm="ngForm" class="restaurant-form" (ngSubmit)="onSubmit(restaurantForm)">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{ isEditMode ? 'Edit Restaurant' : 'Create Restaurant' }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="form-row">
+                    <mat-form-field class="half-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput name="name" [(ngModel)]="restaurant.name" required>
+                        <mat-error *ngIf="restaurantForm.controls['name'].invalid && (restaurantForm.controls['name'].dirty || restaurantForm.controls['name'].touched)">
+                            Name is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-checkbox class="half-width" name="isOpen" [(ngModel)]="restaurant.isOpen">Is Open?</mat-checkbox>
+                </div>
+                <div class="form-row">
+                    <mat-form-field class="half-width">
+                        <mat-label>Cuisine Type</mat-label>
+                        <input matInput name="cuisineType" [(ngModel)]="restaurant.cuisineType" required>
+                        <mat-error *ngIf="restaurantForm.controls['cuisineType'].invalid && (restaurantForm.controls['cuisineType'].dirty || restaurantForm.controls['cuisineType'].touched)">
+                            Cuisine Type is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="half-width">
+                        <mat-label>Rating</mat-label>
+                        <input matInput type="number" name="rating" [(ngModel)]="restaurant.rating" required>
+                        <mat-error *ngIf="restaurantForm.controls['rating'].invalid && (restaurantForm.controls['rating'].dirty || restaurantForm.controls['rating'].touched)">
+                            Rating is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-row">
+                    <mat-form-field class="full-width">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput name="description" [(ngModel)]="restaurant.description" required></textarea>
+                        <mat-error *ngIf="restaurantForm.controls['description'].invalid && (restaurantForm.controls['description'].dirty || restaurantForm.controls['description'].touched)">
+                            Description is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-row">
+                    <mat-form-field class="half-width">
+                        <mat-label>Location</mat-label>
+                        <input matInput name="location" [(ngModel)]="restaurant.location" required>
+                        <mat-error *ngIf="restaurantForm.controls['location'].invalid && (restaurantForm.controls['location'].dirty || restaurantForm.controls['location'].touched)">
+                            Location is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="half-width">
+                        <mat-label>Contact Number</mat-label>
+                        <input matInput name="contactNumber" [(ngModel)]="restaurant.contactNumber" pattern="\d{10}" required>
+                        <mat-error *ngIf="restaurantForm.controls['contactNumber'].invalid && (restaurantForm.controls['contactNumber'].dirty || restaurantForm.controls['contactNumber'].touched)">
+                            Contact Number is required and should be in the format 9027482478
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button class="mr-5" mat-flat-button color="primary" type="submit" [disabled]="restaurantForm.invalid">{{ isEditMode ? 'Update' : 'Create' }}</button>
+                <button mat-flat-button type="button" (click)="resetForm(restaurantForm)">Reset</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+    
+</div>
