@@ -27,8 +27,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  // Static Username for header toolbar
   userName = 'Pranita Chavan';
 
+  //Navigation menu's for sidebar
   navItems = [
     { label: 'Dashboard', icon: 'home', route: '' },
     { label: 'Restaurant', icon: 'restaurant_menu', route: 'restaurant' },
@@ -36,15 +38,23 @@ export class AppComponent {
     { label: 'Complaints', icon: 'move_to_inbox', route: '' }
   ];
 
+  //By default sidenav is open or not
   sidenavOpened = false;
 
   constructor(private readonly router: Router){}
 
-  toggleSidenav() {
+  /**
+   * Toggle the sidenav on click of menu icon, by default it is false
+   */
+  toggleSidenav(): void {
     this.sidenavOpened = !this.sidenavOpened;
   }
 
-  navigateRoute(item: { label: string, icon: string, route: string }) {
-    this.router.navigate([item.route])
+  /**
+   * Navigate to the Menu from the sidebar
+   * @param item : Side nav menu
+   */
+  navigateRoute(item: { label: string, icon: string, route: string }): void {
+    this.router.navigate([item.route]);
   }
 }

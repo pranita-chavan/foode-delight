@@ -30,7 +30,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CreateRestaurantComponent implements OnInit {
 
+  //True if update restaurant, false if add new restaurant
   isEditMode: boolean = false;
+
   restaurant: Restaurant = {
     id: '', // Generate or assign ID as needed
     name: '',
@@ -41,6 +43,7 @@ export class CreateRestaurantComponent implements OnInit {
     location: '',
     contactNumber: ''
   };
+
   constructor(private readonly router: Router,
     private route: ActivatedRoute,
     private readonly restaurentService: RestaurantService,
@@ -48,6 +51,7 @@ export class CreateRestaurantComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //Check whether the ID is there in route, if yes, it should be edit mode otherwise create mode
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditMode = true;
@@ -56,14 +60,21 @@ export class CreateRestaurantComponent implements OnInit {
     });
   }
 
-
-  getRestaurantById(id: number) {
+  /**
+   * get restuarant by Id
+   * @param id Restaurant Id
+   */
+  getRestaurantById(id: number): void {
     this.restaurentService.getRestaurentById(id).subscribe(res => {
       if (res)
         this.restaurant = res;
     });
   }
 
+  /**
+   * After clicking on submit button, verify form for validation , and call saveOrUpdate
+   * @param form Ng form reference
+   */
   onSubmit(form: NgForm): void {
     if (form.valid) {
       this.saveOrUpdateRestaurant();
@@ -76,31 +87,57 @@ export class CreateRestaurantComponent implements OnInit {
     }
   }
 
-  saveOrUpdateRestaurant() {
+  /**
+   * According to mode, do the save or update functionality
+   */
+  saveOrUpdateRestaurant(): void {
     if (this.isEditMode) {
-      this.restaurentService.updateRestaurent(this.restaurant).subscribe(res => {
-        this._snackBar.open('Restaurant updated succesfully!', 'close', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-        this.close();
+      this.restaurentService.updateRestaurent(this.restaurant).subscribe({
+        next: () => { 
+          this._snackBar.open('Restaurant updated succesfully!', 'close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          this.close();
+        },
+        error: () => {
+          this._snackBar.open('Something went wrong!. Unable to update restaurant, please try again later.', 'close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+        },
       });
     } else {
-      this.restaurentService.addRestaurent(this.restaurant).subscribe(res => {
-        this._snackBar.open('Restaurant added succesfully!', 'close', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-        this.close();
+      this.restaurentService.addRestaurent(this.restaurant).subscribe({
+        next: () => {
+          this._snackBar.open('Restaurant added succesfully!', 'close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          this.close();
+         },
+        error: () => {
+          this._snackBar.open('Something went wrong!. Unable to add restaurant, please try again later.', 'close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+        },
       });
     }
   }
 
+  /**
+   * reset the form
+   * @param form Form reference
+   */
   resetForm(form: NgForm): void {
     form.resetForm();
   }
 
-  close() {
+  /**
+   * Navigate back to the restaurant list page
+   */
+  close(): void {
     this.router.navigate(['restaurant']);
   }
 }

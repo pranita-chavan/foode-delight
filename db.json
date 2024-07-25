@@ -201,7 +201,7 @@
       "contactNumber": "7077787980"
     },
     {
-      "id": 21,
+      "id": "21",
       "name": "Navab Asia",
       "cuisineType": "Authentic",
       "description": "test a create scenario",
@@ -211,7 +211,7 @@
       "contactNumber": "9085798328"
     },
     {
-      "id": 22,
+      "id": "22",
       "name": "Giridhar",
       "cuisineType": "Pure veg",
       "description": "best veg testing",
@@ -219,16 +219,6 @@
       "isOpen": false,
       "location": "baner",
       "contactNumber": "0000000000"
-    },
-    {
-      "id": "d30e",
-      "name": "Nilayam",
-      "cuisineType": "Indian",
-      "description": "testing 12537636",
-      "rating": 5,
-      "isOpen": false,
-      "location": "Junnar",
-      "contactNumber": "7786368767"
     }
   ]
 }

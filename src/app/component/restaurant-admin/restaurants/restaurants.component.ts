@@ -20,9 +20,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './restaurants.component.html',
   styleUrl: './restaurants.component.scss'
 })
-export class RestaurantsComponent implements OnInit{
+export class RestaurantsComponent implements OnInit {
+  //Data source to be bind to grid
   dataSource: Restaurant[] = [];
-  displayedColumns1: string[] = ['Id', 'Name', 'Cuisine Type', 'Description', 'Rating', 'IsOpen', 'Location', 'Contact Number'];
+
+  //Column list for the grid where field is object property name, and HeaderName is Header to be displayed for the columns of grid
   displayedColumns: { field: string, headerName: string }[] = [
     { field: 'id', headerName: 'Id' },
     { field: 'name', headerName: 'Name' },
@@ -38,37 +40,62 @@ export class RestaurantsComponent implements OnInit{
   constructor(private readonly router: Router,
     private readonly restaurentService: RestaurantService,
     private _snackBar: MatSnackBar
-  ){}
+  ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getRestaurents();
   }
- 
-  getRestaurents() {
+
+  /**
+   * Get the list of the restaurants
+   */
+  getRestaurents(): void {
     this.restaurentService.getRestaurents().subscribe(res => {
       this.dataSource = res;
     });
   }
 
-  getDisplayedColumns() {
+  /**
+   * prepare a list where only field name should be there, required to render a grid
+   * @returns A list of fields i.e string[]
+   */
+  getDisplayedColumns(): string[] {
     return this.displayedColumns.map(ele => ele.field);
   }
 
-  createNewRestaurant() {
+  /**
+   * Navigate to create a new restaurant
+   */
+  createNewRestaurant(): void {
     this.router.navigate(['/create-restaurant']);
   }
 
-  edit(id: number) {
+  /**
+   * Navigate to cupdate restaurant
+   */
+  edit(id: number): void {
     this.router.navigate(['/edit-restaurant', id]);
   }
 
-  delete(id: number) {
-    this.restaurentService.deleteRestaurent(id).subscribe(res => {
-      this._snackBar.open('Restaurant deleted succesfully!', 'close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-      this.getRestaurents();
-    })
+  /**
+   * Delete a restaurant
+   * @param id restaurant id
+   */
+  delete(id: number): void {
+    this.restaurentService.deleteRestaurent(id).subscribe({
+      next: () => {
+        this._snackBar.open('Restaurant deleted succesfully!', 'close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        this.getRestaurents();
+      },
+      error: () => { 
+        this._snackBar.open('Something went wrong!. Unable to delete restaurant, please try again later.', 'close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      },
+    });
   }
 }
